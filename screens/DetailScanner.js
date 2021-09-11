@@ -22,6 +22,7 @@ import AttendanceService from '../Services/AttendanceService';
 class DetailsScanner extends React.Component {
 
     initialState = {
+        test: null,
         qrCode: null,
         fullname: null,
         age: null,

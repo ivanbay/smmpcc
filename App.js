@@ -16,7 +16,6 @@ if (__DEV__) {
 }
 
 
-
 const store = createStore(reducers, composeEnhancers());
 
 const isWeb = Platform.OS === 'web';
