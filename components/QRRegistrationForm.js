@@ -9,8 +9,10 @@ import {
     Box,
     Select,
 } from 'native-base';
+import DatePicker from 'react-native-datepicker';
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons"
 import { ToastAndroid, Alert } from 'react-native';
+import moment from 'moment';
 
 const QRRegistrationForm = (props) => {
 
@@ -18,7 +20,7 @@ const QRRegistrationForm = (props) => {
         qrCode: null,
         firstname: null,
         lastname: null,
-        age: null,
+        birthday: null,
         contactNumber: null,
         address: null,
         selBrgy: null
@@ -26,6 +28,7 @@ const QRRegistrationForm = (props) => {
 
     const [inputField, setInputField] = useState({ ...initialState });
     const [showAddressTextbox, setShowAddressTextbox] = useState(false);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     // scanned qr code, assigned to local state
     useEffect(() => setInputField({ ...inputField, qrCode: props.qrCode }), [props.qrCode]);
@@ -43,7 +46,7 @@ const QRRegistrationForm = (props) => {
 
         if (inputField.qrCode == null
             || (inputField.lastname == null || inputField.lastname == "")
-            || (inputField.age == null || inputField.age == "")
+            || (inputField.birthday == null || inputField.birthday == "")
             || (inputField.firstname == null || inputField.firstname == "")
             || (inputField.contactNumber == null || inputField.contactNumber == "")
             || (inputField.address == null || inputField.address == "")) {
@@ -55,9 +58,10 @@ const QRRegistrationForm = (props) => {
             qrCode: inputField.qrCode,
             lastname: inputField.lastname,
             firstname: inputField.firstname,
-            age: inputField.age,
+            birthday: inputField.birthday,
             contactNumber: inputField.contactNumber,
-            address: inputField.address
+            address: inputField.address,
+            registrationDate: moment().format('YYYY-MM-DD hh:mm:ss')
         }
 
         if(props.formSubmit(data)) {
@@ -132,9 +136,31 @@ const QRRegistrationForm = (props) => {
 
                 <FormControl>
                     <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-                        Age
+                        Birthday
                     </FormControl.Label>
-                    <Input keyboardType="numeric" value={inputField.age} onChangeText={value => inputHandler("age", value)} />
+                   
+                    <DatePicker
+                        showIcon={false}
+                        androidMode="spinner"
+                        style={{ width: "100%" }}
+                        date={inputField.birthday}
+                        mode="date"
+                        placeholder="MM-DD-YYYY"
+                        format="MM-DD-YYYY"
+                        maxDate={moment().format('MM-DD-YYYY')}
+                        confirmBtnText="Chọn"
+                        cancelBtnText="Hủy"
+                        customStyles={{
+                            dateInput: {
+                                borderWidth: 1,
+                                borderColor: '#DFDFDF',
+                            },
+                        }}
+                        onDateChange={(date) => {
+                            inputHandler("birthday", date);
+                        }}
+                        />
+
                 </FormControl>
 
                 <FormControl>

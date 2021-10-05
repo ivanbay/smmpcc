@@ -42,6 +42,7 @@ class DetailsScanner extends React.Component {
 
         RegistrationService.fetchById(data)
             .then(d => {
+
                 if (d.exists() == false) {
                     Alert.alert(
                         "No record found",
@@ -52,9 +53,21 @@ class DetailsScanner extends React.Component {
                         ],
                     );
                 } else {
+
+                    let age = null;
+                    if('age' in d.val()) {
+                        if((d.val().age).includes("-")) {
+                            age = moment().diff(d.val().age, 'years');
+                        } else {
+                            age = d.val().age;
+                        }
+                    } else {
+                        age = moment().diff(d.val().birthday, 'years');
+                    }
+
                     this.setState({
                         address: d.val().address,
-                        age: d.val().age,
+                        age: age,
                         fullname: d.val().lastname + ", " + d.val().firstname,
                         qrCode: d.val().qrCode,
                         contactNumber: d.val().contactNumber
@@ -111,7 +124,7 @@ class DetailsScanner extends React.Component {
         if (this.state.qrCode == null) {
             return (
                 <VStack style={style.row}>
-                    <Text style={{ color: "red", fontStyle: "italic", textAlign: "center", fontSize: 25 }}>Tap Scan Button to scan QR</Text>
+                    <Text fontSize={"lg"} style={{ color: "red", fontStyle: "italic", textAlign: "center" }}>Tap Scan Button to scan QR</Text>
                 </VStack>
             )
         } else {
@@ -147,10 +160,10 @@ class DetailsScanner extends React.Component {
                                 w="90%"
                                 mx='auto'
                             >
-                                <Heading size="xl" color='primary.500'>
+                                <Heading size="2xl" color='primary.500'>
                                     Contact Tracing
                                 </Heading>
-                                <Heading color="muted.400" size="xs">
+                                <Heading color="muted.400" size="md">
                                     Information attached to the QR Code
                                 </Heading>
 
@@ -162,28 +175,28 @@ class DetailsScanner extends React.Component {
                                     mx='auto'
                                 >
                                     <VStack style={style.row}>
-                                        <Text style={style.label} adjustsFontSizeToFit ><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="qrcode" size={5} /> QR Code</Text>
-                                        <Text fontSize={35} adjustsFontSizeToFit fontWeight='bold'>{this.state.qrCode}</Text>
+                                        <Text style={style.label} adjustsFontSizeToFit ><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="qrcode" size={"lg"} /> QR Code</Text>
+                                        <Text fontSize={"4xl"} adjustsFontSizeToFit fontWeight='bold'>{this.state.qrCode}</Text>
+                                    </VStack>
+
+                                    <VStack style={{ height: 'auto', textAlign: 'center', marginBottom: 5}}>
+                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="account" size={"lg"} /> Full Name</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.fullname}</Text>
                                     </VStack>
 
                                     <VStack style={style.row}>
-                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="account" size={5} /> Full Name</Text>
-                                        <Text fontSize={35} fontWeight='bold'>{this.state.fullname}</Text>
+                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="account-multiple-plus" size={"lg"} /> Age</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.age !== null ? this.state.age + ' y/o' : ""}</Text>
                                     </VStack>
 
                                     <VStack style={style.row}>
-                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="account-multiple-plus" size={5} /> Age</Text>
-                                        <Text fontSize={35} fontWeight='bold'>{this.state.age}</Text>
+                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="home" size={"lg"} /> Contact Number</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.contactNumber}</Text>
                                     </VStack>
 
                                     <VStack style={style.row}>
-                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="home" size={5} /> Contact Number</Text>
-                                        <Text fontSize={35} fontWeight='bold'>{this.state.contactNumber}</Text>
-                                    </VStack>
-
-                                    <VStack style={style.row}>
-                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="home" size={5} /> Barangay/Address</Text>
-                                        <Text fontSize={35} fontWeight='bold'>{this.state.address}</Text>
+                                        <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="home" size={"lg"} /> Barangay/Address</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.address}</Text>
                                     </VStack>
 
 

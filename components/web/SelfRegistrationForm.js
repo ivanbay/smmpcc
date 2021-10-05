@@ -14,6 +14,7 @@ import {
     Icon,
     View
 } from 'native-base';
+import Moment from 'moment';
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import * as ImagePicker from 'expo-image-picker';
 import { Image, StyleSheet, Platform } from 'react-native';
@@ -21,12 +22,14 @@ import SvgQRCode from 'react-native-qrcode-svg';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import RegistrationService from '../../Services/RegistrationService';
 
+
 const SelfRegistrationForm = (props) => {
 
     const initialState = {
         qrCode: null,
         firstname: null,
         lastname: null,
+        birthday: null,
         age: null,
         contactNumber: null,
         address: null,
@@ -86,7 +89,7 @@ const SelfRegistrationForm = (props) => {
 
         if ((inputField.lastname == null || inputField.lastname == "")
             || (inputField.firstname == null || inputField.firstname == "")
-            || (inputField.age == null || inputField.age == "")
+            || (inputField.birthday == null || inputField.birthday == "")
             || (inputField.contactNumber == null || inputField.contactNumber == "")
             || (inputField.address == null || inputField.address == "")) {
 
@@ -109,9 +112,10 @@ const SelfRegistrationForm = (props) => {
             qrCode: uid,
             lastname: inputField.lastname,
             firstname: inputField.firstname,
-            age: inputField.age,
+            birthday: inputField.birthday,
             contactNumber: inputField.contactNumber,
-            address: inputField.address
+            address: inputField.address,
+            registrationDate: moment().format('YYYY-MM-DD hh:mm:ss')
         }
 
 
@@ -201,9 +205,9 @@ const SelfRegistrationForm = (props) => {
 
                     <FormControl>
                         <FormControl.Label _text={{ color: 'muted.700', fontSize: 'sm', fontWeight: 600 }}>
-                            Age
+                            Birthday
                         </FormControl.Label>
-                        <Input keyboardType="numeric" value={inputField.age} onChangeText={value => inputHandler("age", value)} style={{ borderColor: '#000000' }} />
+                        <Input placeholder="m/d/y" value={inputField.birthday} onChangeText={value => inputHandler("birthday", value)} style={{ borderColor: '#000000' }} />
                     </FormControl>
 
                     <FormControl>
@@ -224,7 +228,6 @@ const SelfRegistrationForm = (props) => {
                             onValueChange={addr => addressSelection(addr)}
                             borderColor="#000000"
                         >
-
                             <Select.Item label="Poblacion 1" value="1" />
                             <Select.Item label="Poblacion 2" value="2" />
                             <Select.Item label="Poblacion 3" value="3" />
@@ -237,8 +240,21 @@ const SelfRegistrationForm = (props) => {
                             <Select.Item label="Poblacion 10" value="10" />
                             <Select.Item label="Poblacion 11" value="11" />
                             <Select.Item label="Poblacion 12" value="12" />
-                            <Select.Item label="OTHERS" value="OTHERS" />
-
+                            <Select.Item label="Banaybanay" value="Banaybanay" />
+                            <Select.Item label="Dagatan" value="Dagatan" />
+                            <Select.Item label="Tamacan" value="Tamacan" />
+                            <Select.Item label="Halang" value="Halang" />
+                            <Select.Item label="Pangil" value="Pangil" />
+                            <Select.Item label="Loma" value="Loma" />
+                            <Select.Item label="Salaban" value="Salaban" />
+                            <Select.Item label="Talon" value="Talon" />
+                            <Select.Item label="Maitim" value="Maitim" />
+                            <Select.Item label="Buho" value="Buho" />
+                            <Select.Item label="Minantok Silangan" value="Minantok Silangan" />
+                            <Select.Item label="Minantok Kanluran" value="Minantok Kanluran" />
+                            <Select.Item label="Bucal" value="Bucal" />
+                            <Select.Item label="Maymangga" value="Maymangga" />
+                            <Select.Item label="OTHERS" value="OTHERS" />   
                         </Select>
                     </FormControl>
 
@@ -263,6 +279,9 @@ const SelfRegistrationForm = (props) => {
     }
 
     const RegistrationDetails = () => {
+
+        Moment.locale('en');
+
         return (
             <Box
                 flex={1}
@@ -306,7 +325,7 @@ const SelfRegistrationForm = (props) => {
                     </VStack>
 
                     <VStack style={style.row}>
-                        <Text fontSize={"xl"} noOfLines={1} fontWeight='bold'><Icon mr={3} as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="alarm-plus" size={"sm"} /> {inputField.age} y/o</Text>
+                        <Text fontSize={"xl"} noOfLines={1} fontWeight='bold'><Icon mr={3} as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="calendar-month" size={"sm"} /> {Moment(inputField.birthday).format('MMMM DD, YYYY')} ({ Moment().diff(inputField.birthday, 'years') } y/o) </Text>
                     </VStack>
 
                     <VStack style={style.row}>
