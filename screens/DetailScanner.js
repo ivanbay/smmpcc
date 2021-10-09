@@ -92,9 +92,6 @@ class DetailsScanner extends React.Component {
             let data = {
                 qrCode: this.state.qrCode,
                 fullname: this.state.fullname,
-                age: this.state.age,
-                address: this.state.address,
-                contactNumber: this.state.contactNumber,
                 timein: moment().format('YYYY-MM-DD hh:mm:ss')
             }
 

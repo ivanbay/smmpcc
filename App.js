@@ -7,7 +7,13 @@ import { Provider } from 'react-redux';
 import reducers from './store/reducers/reducers';
 
 import Tabs from './navigation/Tabs';
+
 import SelfRegistration from './screens/web/SelfRegistration';
+
+// const Tabs = Platform.select({
+//     android: () => require('./navigation/Tabs'),
+//     default: null
+// });
 
 let composeEnhancers = compose;
 

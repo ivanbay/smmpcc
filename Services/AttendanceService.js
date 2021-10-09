@@ -1,5 +1,4 @@
 import firebase from "../config/Firebase";
-import { Alert } from "react-native";
 import moment from 'moment';
 
 const db = firebase.database();

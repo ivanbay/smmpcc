@@ -16,6 +16,10 @@ class RegistrationService {
         return db.ref(ref).child(id).once('value');
     }
 
+    updateById = (id, obj) => {
+        return db.ref(ref).child(id).update(obj);
+    }
+
     create = (id, data) => {
         return db.ref(ref).child(id).set(data);
     }

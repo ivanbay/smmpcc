@@ -7,15 +7,10 @@ import { setScanned } from '../store/actions/actions';
 
 import ScannerTab from './ScannerTab';
 import RegistrationTab from './RegistrationTab';
+import ListTab from './ListTab';
 
 const Tab = createBottomTabNavigator();
 
-
-const ListScreen = () => {
-    return (
-        <Text>ListScreen</Text>
-    )
-}
 
 const CustomTabBarButton = ({ children, onPress }) => (
     <TouchableOpacity
@@ -105,7 +100,7 @@ const Tabs = () => {
                     }
                 }}
             />
-            <Tab.Screen name="List" component={ListScreen} options={{
+            <Tab.Screen name="List" component={ListTab} options={{
                 tabBarIcon: ({ focused }) => (
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Image
