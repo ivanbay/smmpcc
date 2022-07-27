@@ -61,6 +61,7 @@ const QRRegistrationForm = (props) => {
             birthday: inputField.birthday,
             contactNumber: inputField.contactNumber,
             address: inputField.address,
+            imageUri: "https://firebasestorage.googleapis.com/v0/b/smmpcc-f1d23.appspot.com/o/default-profile-photo.jpg?alt=media&token=8bbe761b-1556-42a7-b847-f5d6010fc6fd",
             registrationDate: moment().format('YYYY-MM-DD hh:mm:ss')
         }
 
@@ -145,9 +146,9 @@ const QRRegistrationForm = (props) => {
                         style={{ width: "100%" }}
                         date={inputField.birthday}
                         mode="date"
-                        placeholder="MM-DD-YYYY"
-                        format="MM-DD-YYYY"
-                        maxDate={moment().format('MM-DD-YYYY')}
+                        placeholder="MM/DD/YYYY"
+                        format="MM/DD/YYYY"
+                        maxDate={moment().format('MM/DD/YYYY')}
                         confirmBtnText="Chọn"
                         cancelBtnText="Hủy"
                         customStyles={{

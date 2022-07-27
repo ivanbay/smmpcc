@@ -27,31 +27,35 @@ class List extends React.Component {
     componentDidMount() {
 
         AttendanceService.fetchAll()
-            .child("2021-10-09") //moment().format('YYYY-MM-DD')
+            .child(moment().format('YYYY-MM-DD'))
+            .orderByChild("timein").limitToLast(20)
             .on('value', record => {
 
                 record.forEach(d => {
 
-                    let qrCode = d.val(), timeIn = d.key;
+                    console.log(d.val());
+
+                    let qrCode = d.key;
+                    let values = d.val();
 
                     if (!this.state.recordIDs.includes(qrCode)) {
 
-                        RegistrationService.fetchById(qrCode).then(r => {
+                        //     RegistrationService.fetchById(qrCode).then(r => {
 
-                            this.setState({ recordIDs: [...this.state.recordIDs, qrCode] });
+                        this.setState({ recordIDs: [...this.state.recordIDs, qrCode] });
 
-                            this.setState({
-                                flatListData: [...this.state.flatListData, {
-                                    id: qrCode,
-                                    fullName: r.val().lastname + ", " + r.val().firstname,
-                                    timeStamp: timeIn,
-                                    recentText: r.val().address,
-                                    avatarUrl: r.val().imageUri
-                                }]
-                            });
-
-                            this.setState({ listCount: this.state.recordIDs.length })
+                        this.setState({
+                            flatListData: [...this.state.flatListData, {
+                                id: values.qrCode,
+                                fullName: values.fullname,
+                                timeStamp: values.timein,
+                                recentText: values.address,
+                                avatarUrl: values.avatarUrl !== undefined ? values.avatarUrl : "https://firebasestorage.googleapis.com/v0/b/smmpcc-f1d23.appspot.com/o/default-profile-photo.jpg?alt=media&token=8bbe761b-1556-42a7-b847-f5d6010fc6fd"
+                            }]
                         });
+
+                        this.setState({ listCount: this.state.recordIDs.length })
+                        // });
 
                     }
 
@@ -88,6 +92,7 @@ class List extends React.Component {
 
 
         return (
+
             <NativeBaseProvider>
                 <Box
                     flex={1}
@@ -101,7 +106,8 @@ class List extends React.Component {
                         Contact Tracing List
                     </Heading>
                     <Heading color="muted.400" size="md">
-                        {moment().format('MMMM DD, YYYY HH:00')} | {this.state.listCount} Entries
+                        {moment().format('MMMM DD, YYYY')}
+                        {/* | {this.state.listCount} Entries */}
                     </Heading>
 
                     <Box
@@ -110,7 +116,8 @@ class List extends React.Component {
                     >
 
                         {/* <Button onPress={updateList}>Update</Button> */}
-
+                        
+                        
                         <FlatList
                             data={this.state.flatListData}
                             renderItem={({ item }) => (

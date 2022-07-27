@@ -27,7 +27,8 @@ class DetailsScanner extends React.Component {
         fullname: null,
         age: null,
         address: null,
-        contactNumber: null
+        contactNumber: null,
+        avatarUrl: null
     }
 
     constructor(props) {
@@ -62,7 +63,7 @@ class DetailsScanner extends React.Component {
                             age = d.val().age;
                         }
                     } else {
-                        age = moment().diff(d.val().birthday, 'years');
+                        age = moment(d.val().birthday).isValid() === true ? moment().diff(d.val().birthday, 'years') : null;
                     }
 
                     this.setState({
@@ -70,7 +71,8 @@ class DetailsScanner extends React.Component {
                         age: age,
                         fullname: d.val().lastname + ", " + d.val().firstname,
                         qrCode: d.val().qrCode,
-                        contactNumber: d.val().contactNumber
+                        contactNumber: d.val().contactNumber,
+                        avatarUrl: d.val().imageUri
                     })
                 }
 
@@ -89,11 +91,16 @@ class DetailsScanner extends React.Component {
     confirmBtnHandler = () => {
         if (this.state.qrCode !== null) {
 
+            let defaultAvatarUri = "https://firebasestorage.googleapis.com/v0/b/smmpcc-f1d23.appspot.com/o/default-profile-photo.jpg?alt=media&token=8bbe761b-1556-42a7-b847-f5d6010fc6fd";
+
             let data = {
                 qrCode: this.state.qrCode,
                 fullname: this.state.fullname,
+                address: this.state.address,
+                avatarUrl: this.state.avatarUrl === undefined ? defaultAvatarUri : this.state.avatarUrl,
                 timein: moment().format('YYYY-MM-DD hh:mm:ss')
             }
+
 
             AttendanceService.create(this.state.qrCode, data)
                 .then(() => {
@@ -183,7 +190,7 @@ class DetailsScanner extends React.Component {
 
                                     <VStack style={style.row}>
                                         <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="account-multiple-plus" size={"lg"} /> Age</Text>
-                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.age !== null ? this.state.age + ' y/o' : ""}</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.age !== null ? this.state.age + ' y/o' : "-"}</Text>
                                     </VStack>
 
                                     <VStack style={style.row}>
@@ -193,7 +200,7 @@ class DetailsScanner extends React.Component {
 
                                     <VStack style={style.row}>
                                         <Text style={style.label}><Icon as={MaterialCommunityIcons} style={{ color: "#A1A1A1" }} name="home" size={"lg"} /> Barangay/Address</Text>
-                                        <Text fontSize={"4xl"} fontWeight='bold'>{this.state.address}</Text>
+                                        <Text fontSize={"4xl"} fontWeight='bold'>{!isNaN(this.state.address) && this.state.address !== null ? `Poblacion ${this.state.address}` : this.state.address}</Text>
                                     </VStack>
 
 

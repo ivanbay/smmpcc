@@ -148,7 +148,7 @@ const SelfRegistrationForm = (props) => {
                         qrCode: uid,
                         lastname: inputField.lastname,
                         firstname: inputField.firstname,
-                        birthday: Moment(inputField.birthday).format('MM/DD/YYYY'),
+                        birthday: Moment(`${inputField.bMonth}/${inputField.bDay}/${inputField.bYear}`).format('MM/DD/YYYY'),
                         contactNumber: inputField.contactNumber,
                         address: inputField.address,
                         imageUri: imageUri,
